@@ -3,6 +3,9 @@ alias newalias='vim ~/.bashrc; source ~/.bashrc'
 # Directories
 alias code="cd ~/code"
 
+
+alias composernolimit="php -d memory_limit=-1 /usr/local/bin/composer update"
+
 # Git
 alias storecreds="git config credential.helper store"
 alias add="git add"
@@ -31,6 +34,17 @@ function mergeMaster() {
     master
     git checkout $branch
     git merge master
+}
+function pushup() {
+	branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+	git push --set-upstream origin $branch
+}
+function gittrash() {
+	branch=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+	git checkout -b trash-branch
+	commit "trash"
+	git checkout $branch
+	git branch -D trash-branch
 }
 
 # Laravel
@@ -68,3 +82,7 @@ alias up="homestead up"
 alias vssh="homestead ssh"
 alias down="homestead suspend"
 alias provision="homestead reload --provision"
+
+function homesteadFlipPilot() {
+    ( cd ~/Homestead/FlipPilot && vagrant $* )
+}
